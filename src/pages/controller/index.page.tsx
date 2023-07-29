@@ -1,6 +1,7 @@
 import type { PlayerStatus } from '$/repository/playersRepository';
 import type { MoveTo } from '$/usecase/playerUseCase';
 import { useCallback, useEffect, useState } from 'react';
+import { Joystick } from 'react-joystick-component';
 import { apiClient } from 'src/utils/apiClient';
 import styles from './controller.module.css';
 
@@ -19,6 +20,21 @@ const Controller = () => {
     const res = apiClient.bullet.$post();
     console.log(res);
   };
+
+  function roundNumbers(x: number, y: number) {
+    function roundNumberX(num: number) {
+      if (num >= 0.5) return 1;
+      if (num <= -0.5) return -1;
+      return 0;
+    }
+    function roundNumberY(num: number) {
+      if (num >= 0.5) return -1;
+      if (num <= -0.5) return 1;
+      return 0;
+    }
+
+    clickMoveButton({ toX: roundNumberX(x), toY: roundNumberY(y) });
+  }
 
   const move = useCallback(() => {
     if (upPush) {
@@ -98,6 +114,20 @@ const Controller = () => {
         <button onClick={() => clickMoveButton({ toX: -1, toY: 1 })}>↙</button>
         <button onClick={() => clickMoveButton({ toX: 0, toY: 1 })}>↓</button>
         <button onClick={() => clickMoveButton({ toX: 1, toY: 1 })}>↘</button>
+      </div>
+      <div>
+        <Joystick
+          size={100}
+          sticky={false}
+          baseColor="red"
+          stickColor="blue"
+          throttle={100}
+          move={(e) => {
+            if (e.x === null) return;
+            if (e.y === null) return;
+            roundNumbers(e.x, e.y);
+          }}
+        />
       </div>
     </div>
   );

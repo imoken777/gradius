@@ -16,29 +16,19 @@ const Game = () => {
   const BackgroundImage = () => {
     const [image] = useImage(staticPath.images.space_background_png);
     const [pos, setPos] = useState(0);
-    const imageWidth = image ? image.naturalWidth : 0;
-    const imageHeight = image ? image.naturalHeight : 0;
-    const aspectRatio = imageWidth / imageHeight;
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = viewportHeight * aspectRatio;
 
     useEffect(() => {
       const animate = () => {
-        setPos((oldPos) => (oldPos - 2 <= -viewportWidth ? 0 : oldPos - 2));
+        setPos((oldPos) => (oldPos - 2 <= -1000 ? 0 : oldPos - 2));
         requestAnimationFrame(animate);
       };
       animate();
-    }, [viewportWidth]);
+    }, []);
 
     return (
       <>
-        <Image image={image} x={pos} width={viewportWidth} height={viewportHeight} />
-        <Image
-          image={image}
-          x={pos + viewportWidth}
-          width={viewportWidth}
-          height={viewportHeight}
-        />
+        <Image image={image} x={pos} width={1000} height={700} />
+        <Image image={image} x={pos + 1000} width={1000} height={700} />
       </>
     );
   };
@@ -79,7 +69,7 @@ const Game = () => {
   });
   return (
     <div>
-      <Stage width={1920} height={1080}>
+      <Stage width={1000} height={700}>
         <Layer>{backgroundImageRef.current}</Layer>
         <Layer>
           {bullets.map((bullet) => (
