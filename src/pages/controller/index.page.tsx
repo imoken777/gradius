@@ -121,7 +121,7 @@ const Controller = () => {
           sticky={false}
           baseColor="red"
           stickColor="blue"
-          throttle={100}
+          throttle={50}
           move={(e) => {
             if (e.x === null) return;
             if (e.y === null) return;
